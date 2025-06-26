@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>选择题小游戏</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .quiz-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.6s ease-in-out;
+      width: 400px;
+      max-width: 90%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      margin: 10px 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .option:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: scale(1.03);
+    }
+
+    .option.correct {
+      background-color: rgba(0, 255, 0, 0.4);
+    }
+
+    .option.wrong {
+      background-color: rgba(255, 0, 0, 0.4);
+    }
+
+    #next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #ffcc00;
+      color: #000;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #next-btn:hover {
+      background-color: #ffd633;
+    }
+
+    #result {
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box" id="quiz">
+    <h2 id="question">加载中...</h2>
+    <div id="options"></div>
+    <button id="next-btn">下一题</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "1. 太阳从哪里升起？",
+        options: ["西边", "北边", "东边", "南边"],
+        answer: 2
+      },
+      {
+        question: "2. 哪个数字是质数？",
+        options: ["4", "6", "9", "7"],
+        answer: 3
+      },
+      {
+        question: "3. 地球是第几颗行星（从太阳开始）？",
+        options: ["第三颗", "第二颗", "第五颗", "第七颗"],
+        answer: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach((opt, idx) => {
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = opt;
+        div.onclick = () => selectOption(div, idx);
+        optionsEl.appendChild(div);
+      });
+    }
+
+    function selectOption(el, idx) {
+      const correct = questions[currentQuestion].answer;
+      const options = document.querySelectorAll(".option");
+      options.forEach(opt => opt.onclick = null); // disable clicking again
+      if (idx === correct) {
+        el.classList.add("correct");
+        score++;
+      } else {
+        el.classList.add("wrong");
+        options[correct].classList.add("correct");
+      }
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    };
+
+    function showResult() {
+      document.getElementById("quiz").innerHTML = `
+        <div id="result">
+          🎉 你完成了所有题目！<br/><br/>
+          得分：${score} / ${questions.length}<br/><br/>
+          ${score === questions.length ? "你太棒了！全对！" : "加油，下次更好！"}
+        </div>
+      `;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
