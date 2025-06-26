@@ -131,7 +131,7 @@
     function selectOption(el, idx) {
       const correct = questions[currentQuestion].answer;
       const options = document.querySelectorAll(".option");
-      options.forEach(opt => opt.onclick = null); // disable clicking again
+      options.forEach(opt => opt.onclick = null);
       if (idx === correct) {
         el.classList.add("correct");
         score++;
