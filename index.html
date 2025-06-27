@@ -60,12 +60,6 @@
     .gift.selected {
       background-color: #ffd699;
     }
-    .explanation {
-      display: none;
-      margin-top: 10px;
-      font-style: italic;
-      color: #555;
-    }
     .details {
       display: none;
       margin-top: 10px;
@@ -80,17 +74,16 @@
   </style>
 </head>
 <body>
-    <h1>杰宝节快乐！</h1>
-
   <div class="container">
-    
-    <p style="margin-top: 10px; font-size: 16px; color: #555;">杰宝只能做出一个选择。请在做出选择后，将关键词之一通过邮件告知我。</p>
-  
+    <h1>杰宝节快乐！</h1>
+    <p style="margin-top: 10px; font-size: 16px; color: #555;">
+      杰宝只能做出一个选择。请在做出选择后，将关键词之一通过邮件告知我。
+    </p>
+    <button onclick="showGifts()">点击领取礼物</button>
 
     <div class="gift-options" id="gift-options">
       <div class="gift" onclick="toggleGift(0)">
         🎁 礼物一：对 zrp 最重要
-   
         <div class="details" id="details-0">
           - 你不会知道你得到了什么<br>
           - “最有”价值的<br>
@@ -99,7 +92,6 @@
       </div>
       <div class="gift" onclick="toggleGift(1)">
         🎁 礼物二：和 zrp 最相关
-       
         <div class="details" id="details-1">
           - English or 中文<br>
           - 了解我<br>
@@ -107,8 +99,7 @@
         </div>
       </div>
       <div class="gift" onclick="toggleGift(2)">
-        🎁 礼物三：最实用
-    
+        🎁 礼物三：最实用的选择
         <div class="details" id="details-2">
           - 实用<br>
           - 温暖<br>
@@ -125,12 +116,10 @@
 
     function toggleGift(index) {
       const gift = document.getElementsByClassName("gift")[index];
-      const explanation = document.getElementById(`explain-${index}`);
       const details = document.getElementById(`details-${index}`);
       const isSelected = gift.classList.contains("selected");
 
       gift.classList.toggle("selected");
-      explanation.style.display = isSelected ? "none" : "block";
       details.style.display = isSelected ? "none" : "block";
     }
   </script>
