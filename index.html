@@ -66,6 +66,13 @@
       font-style: italic;
       color: #555;
     }
+    .details {
+      display: none;
+      margin-top: 10px;
+      color: #444;
+      font-size: 14px;
+      line-height: 1.5;
+    }
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(20px);}
       to {opacity: 1; transform: translateY(0);}
@@ -74,21 +81,37 @@
 </head>
 <body>
   <div class="container">
-    <h1>杰宝节快乐！</h1>
+    
+    <p style="margin-top: 10px; font-size: 16px; color: #555;">杰宝只能做出一个选择。请在做出选择后，将关键词之一通过邮件告知我。</p>
     <button onclick="showGifts()">点击领取礼物</button>
 
     <div class="gift-options" id="gift-options">
       <div class="gift" onclick="toggleGift(0)">
         🎁 礼物一：对 Shtuka 最重要
         <div class="explanation" id="explain-0">象征最深的联系与核心价值。</div>
+        <div class="details" id="details-0">
+          - 你不会知道你得到了什么<br>
+          - “最有”价值的<br>
+          - 虚无缥缈
+        </div>
       </div>
       <div class="gift" onclick="toggleGift(1)">
         🎁 礼物二：和 Shtuka 最相关
         <div class="explanation" id="explain-1">充满共鸣的陪伴，是你旅程的一部分。</div>
+        <div class="details" id="details-1">
+          - English or 中文<br>
+          - 了解我<br>
+          - 思考
+        </div>
       </div>
       <div class="gift" onclick="toggleGift(2)">
         🎁 礼物三：最实用的选择
         <div class="explanation" id="explain-2">简单实用，代表贴心与实际的关怀。</div>
+        <div class="details" id="details-2">
+          - 实用<br>
+          - 温暖<br>
+          - 方块的图形
+        </div>
       </div>
     </div>
   </div>
@@ -101,13 +124,12 @@
     function toggleGift(index) {
       const gift = document.getElementsByClassName("gift")[index];
       const explanation = document.getElementById(`explain-${index}`);
-      if (gift.classList.contains("selected")) {
-        gift.classList.remove("selected");
-        explanation.style.display = "none";
-      } else {
-        gift.classList.add("selected");
-        explanation.style.display = "block";
-      }
+      const details = document.getElementById(`details-${index}`);
+      const isSelected = gift.classList.contains("selected");
+
+      gift.classList.toggle("selected");
+      explanation.style.display = isSelected ? "none" : "block";
+      details.style.display = isSelected ? "none" : "block";
     }
   </script>
 </body>
