@@ -1,166 +1,114 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <title>选择题小游戏</title>
+  <meta charset="UTF-8">
+  <title>杰宝节快乐！</title>
   <style>
     body {
-      font-family: "Helvetica Neue", sans-serif;
-      background: linear-gradient(to right, #6dd5ed, #2193b0);
       margin: 0;
       padding: 0;
-      color: #fff;
+      font-family: "Helvetica Neue", sans-serif;
+      background: linear-gradient(to right, #f6d365, #fda085);
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-      overflow: hidden;
+      color: #333;
     }
-
-    .quiz-box {
-      background-color: rgba(255, 255, 255, 0.1);
+    .container {
+      text-align: center;
+      background-color: rgba(255,255,255,0.8);
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      animation: fadeIn 0.6s ease-in-out;
-      width: 400px;
-      max-width: 90%;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease-in-out;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 {
-      font-size: 22px;
+    h1 {
+      font-size: 32px;
       margin-bottom: 20px;
     }
-
-    .option {
-      margin: 10px 0;
-      background-color: rgba(255, 255, 255, 0.2);
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .option:hover {
-      background-color: rgba(255, 255, 255, 0.3);
-      transform: scale(1.03);
-    }
-
-    .option.correct {
-      background-color: rgba(0, 255, 0, 0.4);
-    }
-
-    .option.wrong {
-      background-color: rgba(255, 0, 0, 0.4);
-    }
-
-    #next-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
       border: none;
-      border-radius: 6px;
-      background-color: #ffcc00;
-      color: #000;
+      border-radius: 8px;
+      background-color: #ff8c00;
+      color: white;
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
-    #next-btn:hover {
-      background-color: #ffd633;
+    button:hover {
+      background-color: #ffa733;
     }
-
-    #result {
-      font-size: 20px;
-      text-align: center;
+    .gift-options {
+      display: none;
+      margin-top: 30px;
+      text-align: left;
+    }
+    .gift {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #fff3e6;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    .gift:hover {
+      background-color: #ffe0c2;
+      transform: scale(1.03);
+    }
+    .gift.selected {
+      background-color: #ffd699;
+    }
+    .explanation {
+      display: none;
+      margin-top: 10px;
+      font-style: italic;
+      color: #555;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
-  <div class="quiz-box" id="quiz">
-    <h2 id="question">加载中...</h2>
-    <div id="options"></div>
-    <button id="next-btn">下一题</button>
+  <div class="container">
+    <h1>杰宝节快乐！</h1>
+    <button onclick="showGifts()">点击领取礼物</button>
+
+    <div class="gift-options" id="gift-options">
+      <div class="gift" onclick="toggleGift(0)">
+        🎁 礼物一：对 Shtuka 最重要
+        <div class="explanation" id="explain-0">象征最深的联系与核心价值。</div>
+      </div>
+      <div class="gift" onclick="toggleGift(1)">
+        🎁 礼物二：和 Shtuka 最相关
+        <div class="explanation" id="explain-1">充满共鸣的陪伴，是你旅程的一部分。</div>
+      </div>
+      <div class="gift" onclick="toggleGift(2)">
+        🎁 礼物三：最实用的选择
+        <div class="explanation" id="explain-2">简单实用，代表贴心与实际的关怀。</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const questions = [
-      {
-        question: "1. 太阳从哪里升起？",
-        options: ["西边", "北边", "东边", "南边"],
-        answer: 2
-      },
-      {
-        question: "2. 哪个数字是质数？",
-        options: ["4", "6", "9", "7"],
-        answer: 3
-      },
-      {
-        question: "3. 地球是第几颗行星（从太阳开始）？",
-        options: ["第三颗", "第二颗", "第五颗", "第七颗"],
-        answer: 0
-      }
-    ];
-
-    let currentQuestion = 0;
-    let score = 0;
-
-    const questionEl = document.getElementById("question");
-    const optionsEl = document.getElementById("options");
-    const nextBtn = document.getElementById("next-btn");
-
-    function loadQuestion() {
-      const q = questions[currentQuestion];
-      questionEl.textContent = q.question;
-      optionsEl.innerHTML = "";
-      q.options.forEach((opt, idx) => {
-        const div = document.createElement("div");
-        div.className = "option";
-        div.textContent = opt;
-        div.onclick = () => selectOption(div, idx);
-        optionsEl.appendChild(div);
-      });
+    function showGifts() {
+      document.getElementById("gift-options").style.display = "block";
     }
 
-    function selectOption(el, idx) {
-      const correct = questions[currentQuestion].answer;
-      const options = document.querySelectorAll(".option");
-      options.forEach(opt => opt.onclick = null);
-      if (idx === correct) {
-        el.classList.add("correct");
-        score++;
+    function toggleGift(index) {
+      const gift = document.getElementsByClassName("gift")[index];
+      const explanation = document.getElementById(`explain-${index}`);
+      if (gift.classList.contains("selected")) {
+        gift.classList.remove("selected");
+        explanation.style.display = "none";
       } else {
-        el.classList.add("wrong");
-        options[correct].classList.add("correct");
+        gift.classList.add("selected");
+        explanation.style.display = "block";
       }
     }
-
-    nextBtn.onclick = () => {
-      currentQuestion++;
-      if (currentQuestion < questions.length) {
-        loadQuestion();
-      } else {
-        showResult();
-      }
-    };
-
-    function showResult() {
-      document.getElementById("quiz").innerHTML = `
-        <div id="result">
-          🎉 你完成了所有题目！<br/><br/>
-          得分：${score} / ${questions.length}<br/><br/>
-          ${score === questions.length ? "你太棒了！全对！" : "加油，下次更好！"}
-        </div>
-      `;
-    }
-
-    loadQuestion();
   </script>
 </body>
 </html>
