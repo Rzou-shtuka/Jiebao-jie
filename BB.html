@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>杰宝节快乐！</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      background: linear-gradient(to right, #f6d365, #fda085);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+    }
+    .container {
+      text-align: center;
+      background-color: rgba(255,255,255,0.8);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff8c00;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #ffa733;
+    }
+    .gift-options {
+      display: none;
+      margin-top: 30px;
+      text-align: left;
+    }
+    .gift {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #fff3e6;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    .gift:hover {
+      background-color: #ffe0c2;
+      transform: scale(1.03);
+    }
+    .gift.selected {
+      background-color: #ffd699;
+    }
+    .details {
+      display: none;
+      margin-top: 10px;
+      color: #444;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>杰宝节快乐！</h1>
+    <p style="margin-top: 10px; font-size: 16px; color: #555;">
+      杰宝在以下礼物里选择一个吧，只能选一个哟。请在做出选择后，将关键词之一通过邮件告知我。
+    </p>
+    <button onclick="showGifts()">点击查看礼物描述</button>
+
+    <div class="gift-options" id="gift-options">
+      <div class="gift" onclick="toggleGift(0)">
+        🎁 礼物一：对 zrp 最重要
+        <div class="details" id="details-0">
+          - 你不会知道你得到了什么<br>
+          - 最有“价值”的<br>
+          - 虚无缥缈
+        </div>
+      </div>
+      <div class="gift" onclick="toggleGift(1)">
+        🎁 礼物二：和 zrp 最相关
+        <div class="details" id="details-1">
+          - 英文/中文<br>
+          - 了解我<br>
+          - 思考
+        </div>
+      </div>
+      <div class="gift" onclick="toggleGift(2)">
+        🎁 礼物三：最实用的选择
+        <div class="details" id="details-2">
+          - 实用<br>
+          - 温暖<br>
+          - 方块
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showGifts() {
+      document.getElementById("gift-options").style.display = "block";
+    }
+
+    function toggleGift(index) {
+      const gift = document.getElementsByClassName("gift")[index];
+      const details = document.getElementById(`details-${index}`);
+      const isSelected = gift.classList.contains("selected");
+
+      gift.classList.toggle("selected");
+      details.style.display = isSelected ? "none" : "block";
+    }
+  </script>
+</body>
+</html>
